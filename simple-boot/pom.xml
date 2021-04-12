@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>cn.az.app</groupId>
-    <artifactId>simple-application</artifactId>
+    <artifactId>simple-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>simple-application</name>
+    <name>simple-boot</name>
     <description>Docker project for Spring Boot</description>
 
     <properties>

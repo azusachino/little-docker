@@ -1,6 +1,6 @@
 spring:
   application:
-    name: simple-application
+    name: simple-boot
 
 server:
   port: 8090
