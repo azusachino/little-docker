@@ -1,0 +1,11 @@
+# define a config map
+# `kubectl apply -f k8s-redis-config.yml`
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-redis-config
+data:
+  redis-config: |
+    maxmemory 2mb
+    maxmemory-policy allkeys-lru
+
