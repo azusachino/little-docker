@@ -1,0 +1,38 @@
+# create redis as a pod
+# `kubectl get pod/redis configmap/k8s-redis-config` check status
+# `kubectl describe configmap/k8s-redis-config` check config map setting
+# `kubectl exec -it redis -- redis-cli` connect the pod and exec `redis-cli`
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+spec:
+  containers:
+    - name: redis
+      image: redis:5.0.4
+      command:
+        - redis-server
+        - "/redis-master/redis.conf"
+      env:
+        - name: MASTER
+          value: "true"
+      ports:
+        - containerPort: 6379
+      resources:
+        limits:
+          memory: "100M"
+          cpu: "0.1"
+      volumeMounts:
+        - mountPath: /redis-master-data
+          name: data
+        - mountPath: /redis-master
+          name: config
+  volumes:
+    - name: data
+      emptyDir: {}
+    - name: config
+      configMap:
+        name: k8s-redis-config
+        items:
+          - key: redis-config
+            path: redis.conf
