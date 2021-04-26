@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    haproxy:
+        image: haproxy:${HAPROXY_VERSION}
+        restart: always
+        volumes: 
+            - ./haproxy:/usr/local/etc/haproxy
+        ports:
+            - 8888:8888
+            - 4002:3306
+        command: ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+    mysql:
+        image: percona/percona-xtradb-cluster:${MYSQL_VERSION}
+        container_name: mysql
+        restart: always
+        volumes: ./mysql:/var/lib/mysql
+        network_mode: "host" # 采用宿主ip
+        ports: 
+            - 3306:3306
+        env_file: 
+            - ./mysql/env/mysql.env
+        depends_on: haproxy
