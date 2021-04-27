@@ -2,12 +2,13 @@ version: "3"
 
 services:
   mysql:
-    image: percona/percona-xtradb-cluster:5.7
-    restart: always
+    image: percona/percona-xtradb-cluster/pxc:5.7
+    # restart: always
     container_name: mysql
-    # network_mode: "host"
+    network_mode: "host"
+    privilege: true
     environment:
-      - TZ=Asia/Shanghai
+      # - TZ=Asia/Shanghai
       - MYSQL_ROOT_PASSWORD=root
       - CLUSTER_NAME=scv-mysql-cluster
       # The image will create the user xtrabackup@localhost for the XtraBackup SST method. If you want to use a password for the xtrabackup user, set XTRABACKUP_PASSWORD.
@@ -16,12 +17,13 @@ services:
     volumes:
       - ./mysql/data:/usr/lib/mysql
       - ./mysql/log:/usr/log/mysql
-      - ./init:/docker-entrypoint-initdb.d/
+      - ./mysql/pxc:/data
+      # - ./init:/docker-entrypoint-initdb.d/
     ports:
       - "33306:3306"
-      - "4567:4567"
-    command:
-      [
-        "--character-set-server=utf8mb4",
-        "--collation-server=utf8mb4_general_ci",
-      ]
+      # - "4567:4567"
+    # command:
+    #   [
+    #     "--character-set-server=utf8mb4",
+    #     "--collation-server=utf8mb4_general_ci",
+    #   ]

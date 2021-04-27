@@ -1,0 +1,90 @@
+version: "3.5"
+
+services:
+  mysql1:
+    image: percona/percona-xtradb-cluster:5.7
+    container_name: mysql1
+    # restart: always
+    privileged: true
+    volumes:
+      - v1:/var/lib/mysql
+      - ./mysql/cnf/my1.cnf:/etc/my.cnf
+    # network_mode: "host" # 采用宿主ip
+    ports:
+      - "14306:3306"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=root
+      - CLUSTER_NAME=scv-mysql-cluster
+      # The image will create the user xtrabackup@localhost for the XtraBackup SST method. If you want to use a password for the xtrabackup user, set XTRABACKUP_PASSWORD.
+      - XTRABACKUP_PASSWORD=pass
+      # - CLUSTER_JOIN=172.31.103.116
+    # env_file:
+    #   - ./mysql/env/mysql.env
+    # depends_on: haproxy
+    networks:
+      my-network:
+        ipv4_address: 172.31.0.11
+  mysql2:
+    image: percona/percona-xtradb-cluster:5.7
+    container_name: mysql2
+    # restart: always
+    privileged: true
+    volumes:
+      - v2:/var/lib/mysql
+    # - ./mysql/cnf/my2.cnf:/etc/my.cnf
+    # network_mode: "host" # 采用宿主ip
+    ports:
+      - "14307:3306"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=root
+      - CLUSTER_NAME=scv-mysql-cluster
+      # The image will create the user xtrabackup@localhost for the XtraBackup SST method. If you want to use a password for the xtrabackup user, set XTRABACKUP_PASSWORD.
+      - XTRABACKUP_PASSWORD=pass
+      - CLUSTER_JOIN=mysql1
+    # env_file:
+    #   - ./mysql/env/mysql.env
+    depends_on:
+      - mysql1
+    networks:
+      my-network:
+        ipv4_address: 172.31.0.12
+  mysql3:
+    image: percona/percona-xtradb-cluster:5.7
+    container_name: mysql3
+    # restart: always
+    privileged: true
+    volumes:
+      - v3:/var/lib/mysql
+      # - ./mysql/cnf/my3.cnf:/etc/my.cnf
+      # network_mode: "host" # 采用宿主ip
+    ports:
+      - "14308:3306"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=root
+      - CLUSTER_NAME=scv-mysql-cluster
+      # The image will create the user xtrabackup@localhost for the XtraBackup SST method. If you want to use a password for the xtrabackup user, set XTRABACKUP_PASSWORD.
+      - XTRABACKUP_PASSWORD=pass
+      - CLUSTER_JOIN=mysql1
+    # env_file:
+    #   - ./mysql/env/mysql.env
+    depends_on:
+      - mysql1
+    networks:
+      my-network:
+        ipv4_address: 172.31.0.13
+networks:
+  my-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.31.0.0/24"
+volumes:
+  v1:
+    name: v1
+  v2:
+    name: v2
+  v3:
+    name: v3

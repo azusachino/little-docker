@@ -1,23 +1,32 @@
-version: '3'
+version: "3.5"
 
 services:
-    haproxy:
-        image: haproxy:${HAPROXY_VERSION}
-        restart: always
-        volumes: 
-            - ./haproxy:/usr/local/etc/haproxy
-        ports:
-            - 8888:8888
-            - 4002:3306
-        command: ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
-    mysql:
-        image: percona/percona-xtradb-cluster:${MYSQL_VERSION}
-        container_name: mysql
-        restart: always
-        volumes: ./mysql:/var/lib/mysql
-        network_mode: "host" # 采用宿主ip
-        ports: 
-            - 3306:3306
-        env_file: 
-            - ./mysql/env/mysql.env
-        depends_on: haproxy
+  pxc:
+    image: harbor.iflyco.com/library/pxc:5.7
+    container_name: pxc
+    # restart: always
+    privileged: true
+    # network_mode: "host" # 采用宿主ip
+    volumes:
+      - pxc-data:/var/lib/mysql
+      - ./mysql/cnf/my.cnf:/etc/my.cnf
+    ports:
+      # 不采用host模式，选择映射所有端口
+      - "3307:3306"
+      - "4444:4444"
+      - "4567:4567"
+      - "4568:4568"
+    environment:
+      # - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=root
+      - CLUSTER_NAME=scv-mysql-cluster
+      # The image will create the user xtrabackup@localhost for the XtraBackup SST method. If you want to use a password for the xtrabackup user, set XTRABACKUP_PASSWORD.
+      - XTRABACKUP_PASSWORD=pass
+      # - CLUSTER_JOIN=172.31.103.116
+    # env_file:
+    #   - ./mysql/env/mysql.env
+    # depends_on: haproxy
+
+volumes:
+  pxc-data:
+    name: pxc-data
