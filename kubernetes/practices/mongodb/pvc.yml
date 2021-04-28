@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi # 定义了PVC的容量
+  accessModes:
+    - ReadWriteOnce # 只能在一个node节点上进行读写操作
+  storageClassName: "" # storageClass

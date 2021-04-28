@@ -1,0 +1,26 @@
+version: "3.5"
+
+services:
+  pxc:
+    image: percona/percona-xtradb-cluster:${PXC_VERSION}
+    container_name: pxc
+    # restart: always
+    privileged: true
+    volumes:
+      - data:/var/lib/mysql # persist数据
+      - ./conf/my.cnf:/etc/my.cnf # 配置文件
+      - ./init:/docker-entrypoint-initdb.d/ # 初始化脚本文件
+    ports:
+      # 不采用host模式，选择映射所有端口
+      - "3307:3306"
+      - "4444:4444"
+      - "4567:4567"
+      - "4568:4568"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - CLUSTER_NAME=${CLUSTER_NAME}
+      - XTRABACKUP_PASSWORD=${XTRABACKUP_PASSWORD}
+
+volumes:
+  data:
+    name: data
