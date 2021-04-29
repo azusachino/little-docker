@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+-- TODO 由于不是用的官方mysql镜像，需要自己创建nacos用户
 --  grant all privileges on dbname.tablename to 'userName'@'%';
 -- 比如想给用户nacos赋予数据库test所有的表的权限并且不限制nacos用户的连接地址，代码如下
 grant all privileges on nacos_config.* to 'nacos'@'%';

@@ -22,7 +22,6 @@ services:
       - CLUSTER_NAME=${CLUSTER_NAME}
       - XTRABACKUP_PASSWORD=${XTRABACKUP_PASSWORD}
       - CLUSTER_JOIN=${CLUSTER_JOIN}
-
 volumes:
   data:
     name: data
