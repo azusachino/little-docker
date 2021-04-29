@@ -2,12 +2,12 @@ version: "3.5"
 
 services:
   prometheus:
-    image: prom/prometheus
+    image: bitnami/prometheus
     ports:
       - 9090:9090
     volumes:
-      - /az/prometheus:/etc/prometheus
-    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+      - prometheus:/opt/bitnami/prometheus/data
+      - /az/prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
     networks:
       - az-server
   grafana:
@@ -15,8 +15,13 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /az/grafana/data:/var/lib/grafana
-      - /az/grafana/log:/var/log/grafana
+      - grafana:/var/lib/grafana
+      # - /az/grafana/log:/var/log/grafana
+    networks:
+      - az-server
+  node_exporter:
+    image: bitnami/node-exporter
+    container_name: node_exporter
     networks:
       - az-server
 
@@ -24,3 +29,9 @@ networks:
   az-server:
     driver: bridge
     external: true
+
+volumes:
+  prometheus:
+    name: prometheus
+  grafana:
+    name: grafana

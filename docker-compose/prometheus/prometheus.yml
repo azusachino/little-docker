@@ -21,16 +21,19 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
 
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
-
     static_configs:
-      - targets: [ 'localhost:9090' ]
-  - job_name: 'jvm_exporter'
-    metrics_path: '/actuator/prometheus' # 顺序不能颠倒
+      - targets: ["prometheus:9090"]
+  # - job_name: 'jvm_exporter'
+  #   metrics_path: '/actuator/prometheus' # 配置顺序不能颠倒
+  #   static_configs:
+  #     - targets: [ 'localhost:8088' ]
+  #       labels:
+  #         instance: 'scv-meeting'
+  - job_name: "node_exporter"
     static_configs:
-      - targets: [ 'localhost:8088' ]
-        labels:
-          instance: 'scv-meeting'
+      - targets:
+          ["node_exporter:9100", "64.64.224.45:9100", "104.224.188.126:9100"]
