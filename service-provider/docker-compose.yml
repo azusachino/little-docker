@@ -1,0 +1,88 @@
+# 基础服务集合
+version: "3.5"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: iris-mysql
+    restart: always
+    # 采用native编码密码
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    networks:
+      - iris-network
+    environment:
+      MYSQL_ROOT_PASSWORD: azusa520
+    security_opt:
+      # 配置此选项后，避免无限打印安全日志
+      - seccomp:unconfined
+    ports:
+      - 3306:3306
+  redis:
+    image: redis:6.2-alpine
+    container_name: iris-redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - iris-network
+    volumes:
+      - /iris/redis/config:/docker/config
+      - /iris/redis/data:/data
+    command: redis-server /docker/config/redis.conf
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: iris-rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - 5672:5672
+      - 15672:15672
+    privileged: true # 给数据卷赋权限 避免启动出现Permission denied
+    volumes:
+      - ./mqdata:/iris/rabbitmq/lib # 挂载RMQ数据
+      - ./log:/iris/rabbitmq/log # 挂载RMQ日志
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - iris-network
+  prometheus:
+    image: bitnami/prometheus
+    container_name: iris-prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - prometheus:/opt/bitnami/prometheus/data
+      - /iris/prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+    networks:
+      - iris-network
+  grafana:
+    image: grafana/grafana
+    container_name: iris-grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+    networks:
+      - iris-network
+  node_exporter:
+    image: bitnami/node-exporter
+    container_name: iris-node-exporter
+    networks:
+      - iris-network
+
+networks:
+  iris-network:
+    external: true
+    driver: bridge
+
+volumes:
+  prometheus:
+    name: prometheus
+  grafana:
+    name: grafana

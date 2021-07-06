@@ -1,0 +1,20 @@
+version: "3.5"
+
+services:
+  km:
+    image: sheepkiller/kafka-manager
+    ports:
+      - 9000:9000
+    environment:
+      - ZK_HOSTS=zookeeper:2181
+    network:
+      - iris_network
+  elastichq:
+    image: elastichq/elasticsearch-hq
+    ports:
+      - 5000:5000
+    network:
+      - iris_network
+networks:
+  iris_network:
+    external: true

@@ -1,0 +1,3 @@
+# check this url: https://www.elastic.co/guide/en/kibana/7.13/settings.html
+elasticsearch:
+  hosts: ["http://es01:9200"]

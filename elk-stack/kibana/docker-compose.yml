@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.13.2
+    ports:
+      - 5601:5601
+      # by using config file, no need to set env
+      #environment:
+      #SERVER_NAME: kibana.example.org
+      #ELASTICSEARCH_HOSTS: ["http://es01:9200"]
+    volumes:
+      - /iris/elk-stack/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    network:
+      - iris_network
+networks:
+  iris_network:
+    external: true

@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+  logstash1:
+    image: docker.elastic.co/logstash/logstash:7.13.2
+    volumes:
+      - /iris/elk-stack/logstash1/config:/usr/share/logstash/config
+      - /iris/elk-stack/logstash1/pipeline:/usr/share/logstash/pipeline
+      # index template & config
+      - /iris/elk-stack/logstash1/template:/usr/share/logstash/template
+    environment:
+      - LS_JAVA_OPTS="-Xms16g -Xmx32g"
+    network:
+      - iris_network
+networks:
+  iris_network:
+    external: true
