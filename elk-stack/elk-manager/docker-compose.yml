@@ -7,13 +7,13 @@ services:
       - 9000:9000
     environment:
       - ZK_HOSTS=zookeeper:2181
-    network:
+    networks:
       - iris_network
   elastichq:
     image: elastichq/elasticsearch-hq
     ports:
       - 5000:5000
-    network:
+    networks:
       - iris_network
 networks:
   iris_network:

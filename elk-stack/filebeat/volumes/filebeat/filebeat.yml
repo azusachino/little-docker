@@ -1,0 +1,79 @@
+###################### Filebeat Configuration Example #########################
+
+# This file is an example configuration file highlighting only the most common
+# options. The filebeat.reference.yml file from the same directory contains all the
+# supported options with more comments. You can use it as a reference.
+#
+# You can find the full configuration reference here:
+# https://www.elastic.co/guide/en/beats/filebeat/index.html
+
+# For more available modules and options, please see the filebeat.reference.yml sample
+# configuration file.
+
+# ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/logs/*.log
+    fields:
+      model: logstash-filebeat
+    ignore_older: 24h # 不采集24h内无更新的日志
+    close_removed: true # 当文件被删除时，filebeat关闭文件的读取处理
+    close_renamed: true # 当文件重命名或者rotated，关闭句柄
+    clean_removed: true # 当文件在磁盘中找不到时，清理注册表中的文件信息
+    multiline.type: pattern # 匹配多行规则
+    multiline.pattern: '^\d{4}-\d{2}-\d{2}' # 通过日期匹配真实的日志，堆栈信息返回false
+    multiline.negate: true
+    multiline.match: after
+    exclude_lines: ["DEBUG"]
+
+# ============================== Filebeat modules ==============================
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+  # Period on which files under path should be checked for changes
+  #reload.period: 10s
+
+# ======================= Elasticsearch template setting =======================
+
+setup.template.settings:
+  index.number_of_shards: 1
+  #index.codec: best_compression
+  #_source.enabled: false
+
+# ------------------------------ Logstash Output -------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["logstash1:5044"]
+
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+
+  # Certificate for SSL client authentication
+  #ssl.certificate: "/etc/pki/client/cert.pem"
+
+  # Client Certificate Key
+  #ssl.key: "/etc/pki/client/cert.key"
+
+# ------------------------------ Kafka Output -------------------------------
+# output.kafka:
+#   enabled: true
+#   hosts: ["kafka:9092"]
+#   topic: scv-server
+#   version: 2.8.0
+
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~

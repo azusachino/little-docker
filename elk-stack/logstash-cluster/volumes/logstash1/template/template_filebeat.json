@@ -1,0 +1,191 @@
+{
+    "order": 0,
+    "version": 1,
+    "index_patterns": ["logstash-filebeat-*"],
+    "settings": {
+      "index": {
+        "number_of_shards": "1",
+        "number_of_replicas": "0",
+        "refresh_interval": "60s",
+        "translog": {
+          "durability": "async",
+          "sync_interval": "60s",
+          "flush_threshold_size": "1024MB"
+        }
+      }
+    },
+    "mappings": {
+      "dynamic_templates": [
+        {
+          "message_field": {
+            "path_match": "message",
+            "mapping": {
+              "norms": false,
+              "type": "text"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "string_fields": {
+            "mapping": {
+              "norms": false,
+              "type": "keyword"
+            },
+            "match_mapping_type": "string",
+            "match": "*"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "@version": {
+          "type": "keyword"
+        },
+        "agent": {
+          "properties": {
+            "ephemeral_id": {
+              "type": "keyword"
+            },
+            "hostname": {
+              "type": "keyword"
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "type": {
+              "type": "keyword"
+            },
+            "version": {
+              "type": "keyword"
+            }
+          }
+        },
+        "class": {
+          "type": "keyword"
+        },
+        "container": {
+          "properties": {
+            "id": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ecs": {
+          "properties": {
+            "version": {
+              "type": "keyword"
+            }
+          }
+        },
+        "fields": {
+          "properties": {
+            "model": {
+              "type": "keyword"
+            }
+          }
+        },
+        "host": {
+          "properties": {
+            "architecture": {
+              "type": "keyword"
+            },
+            "containerized": {
+              "type": "boolean"
+            },
+            "hostname": {
+              "type": "keyword"
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "ip": {
+              "type": "keyword"
+            },
+            "mac": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "keyword"
+            },
+            "os": {
+              "properties": {
+                "codename": {
+                  "type": "keyword"
+                },
+                "family": {
+                  "type": "keyword"
+                },
+                "kernel": {
+                  "type": "keyword"
+                },
+                "name": {
+                  "type": "keyword"
+                },
+                "platform": {
+                  "type": "keyword"
+                },
+                "type": {
+                  "type": "keyword"
+                },
+                "version": {
+                  "type": "keyword"
+                }
+              }
+            }
+          }
+        },
+        "input": {
+          "properties": {
+            "type": {
+              "type": "keyword"
+            }
+          }
+        },
+        "level": {
+          "type": "keyword"
+        },
+        "log": {
+          "properties": {
+            "file": {
+              "properties": {
+                "path": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "offset": {
+              "type": "long"
+            }
+          }
+        },
+        "message": {
+          "type": "keyword"
+        },
+        "msg": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_smart",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "tags": {
+          "type": "keyword"
+        },
+        "thread": {
+          "type": "keyword"
+        }
+      }
+    },
+    "aliases": {}
+  }
+  

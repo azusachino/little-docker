@@ -1,0 +1,97 @@
+{
+    "order": 0,
+    "version": 1,
+    "index_patterns": ["logstash-kafka-*"],
+    "settings": {
+      "index": {
+        "number_of_shards": "2",
+        "number_of_replicas": "0",
+        "refresh_interval": "30s",
+        "max_result_window": 100000,
+        "translog": {
+          "durability": "async",
+          "sync_interval": "60s",
+          "flush_threshold_size": "1024MB"
+        }
+      }
+    },
+    "mappings": {
+      "dynamic_templates": [
+        {
+          "message_field": {
+            "path_match": "message",
+            "mapping": {
+              "norms": false,
+              "type": "text"
+            },
+            "match_mapping_type": "string"
+          }
+        },
+        {
+          "string_fields": {
+            "mapping": {
+              "norms": false,
+              "type": "keyword"
+            },
+            "match_mapping_type": "string",
+            "match": "*"
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "@version": {
+          "type": "keyword"
+        },
+        "extra": {
+          "type": "keyword",
+          "ignore_above": 64
+        },
+        "level": {
+          "type": "keyword"
+        },
+        "message": {
+          "type": "keyword"
+        },
+        "module": {
+          "type": "keyword"
+        },
+        "msg": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_smart",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "platform": {
+          "type": "keyword"
+        },
+        "rid": {
+          "type": "keyword"
+        },
+        "sys": {
+          "type": "keyword"
+        },
+        "tags": {
+          "type": "keyword"
+        },
+        "uid": {
+          "type": "keyword"
+        },
+        "uuid": {
+          "type": "keyword"
+        },
+        "version": {
+          "type": "keyword"
+        }
+      }
+    },
+    "aliases": {}
+  }
+  
