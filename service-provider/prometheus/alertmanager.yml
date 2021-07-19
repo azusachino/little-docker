@@ -1,0 +1,26 @@
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: ""
+  smtp_from: "xxx@a.com"
+  smtp_auth_username: ""
+  smtp_auth_password: "xxx"
+route:
+  group_by: ["alertname"]
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  reveiver: "mail-receiver"
+receivers:
+  - name: "mail-receiver"
+    email_configs:
+      - to: "xxx@a.comc"
+  - name: "webhook"
+    webhook_configs:
+      - url: http://localhost:8060/dingtalk/webhook1/send
+        send_resolve: true
+inhibit_rules:
+  - source_match:
+      severity: "critical"
+    target_math:
+      severity: "warning"
+    equal: ["alertname", "dev", "instance"]

@@ -1,0 +1,8 @@
+groups:
+  - name: demo-alert-rule
+    rules:
+      - alert: DemoJobDown
+        expr: sum(up{job="springboot-demo"}) == 0
+        for: 1m
+        labels:
+          severity: critical
