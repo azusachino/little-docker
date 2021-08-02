@@ -16,13 +16,13 @@ services:
       # 配置此选项后，避免无限打印安全日志
       - seccomp:unconfined
     ports:
-      - 3306:3306
+      - "3306:3306"
   redis:
     image: redis:6.2-alpine
     container_name: iris-redis
     restart: always
     ports:
-      - 6379:6379
+      - "6379:6379"
     networks:
       - iris-network
     volumes:
@@ -38,8 +38,8 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
     privileged: true # 给数据卷赋权限 避免启动出现Permission denied
     volumes:
       - ./mqdata:/iris/rabbitmq/lib # 挂载RMQ数据
@@ -55,7 +55,7 @@ services:
     image: bitnami/prometheus
     container_name: iris-prometheus
     ports:
-      - 9090:9090
+      - "9090:9090"
     volumes:
       - prometheus:/opt/bitnami/prometheus/data
       - /iris/prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
@@ -65,7 +65,7 @@ services:
     image: grafana/grafana
     container_name: iris-grafana
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - grafana:/var/lib/grafana
     networks:
