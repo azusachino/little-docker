@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-deployment
+  labels:
+    app: iris-node
+spec:
+  # replica set
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris-node
+  # template is like pod spec
+  template:
+    metadata:
+      labels:
+        app: iris-node
+    spec:
+      containers:
+        - name: iris-node
+          image: iris-node:latest
+          ports:
+            - containerPort: 8080

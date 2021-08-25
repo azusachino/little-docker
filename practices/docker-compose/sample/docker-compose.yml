@@ -1,0 +1,43 @@
+version: "3.6"
+
+services:
+  mysql:
+    image: mysql:8
+    volumes:
+      - iris-mysql-volume:/usr/lib/mysql
+    env_file:
+      - .env
+    ports:
+      - "3306"
+    networks:
+      - iris-network
+    # check whether health
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    stop_grace_period: 1m
+    stop_signal: SIGTERM
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+volumes:
+  iris-mysql-volume:
+    driver: local
+
+networks:
+  iris-network:
+    driver: bridge
+
+# only available in docker swarm
+configs:
+  iris-mysql-config:
+    file: iris-mysql-config.txt
+secrets:
+  iris-mysql-secret:
+    file: iris-mysql-secret.txt
