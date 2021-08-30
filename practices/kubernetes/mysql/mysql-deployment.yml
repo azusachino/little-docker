@@ -1,26 +1,45 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: iris-mysql
+  namespace: iris
+  name: iris-mysql-deployment
   labels:
     name: iris-mysql
 spec:
-  containers:
-    - name: mysql
-      image: mysql:8
-      env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: iris-mysql-password
-      ports:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: iris-mysql
+  template:
+    metadata:
+      labels:
+        name: iris-mysql
+    spec:
+      containers:
         - name: mysql
-          containerPort: 3306
-          protocol: TCP
-      volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: iris-mysql-volume
-  volumes:
-    - name: iris-mysql-volume
-      emptyDir: { }
+          image: mysql:5.7
+          imagePullPolicy: IfNotPresent
+          args:
+            - --default_authentication_plugin=mysql_native_password
+          ports:
+            - containerPort: 3306
+              name: mysql-port
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-data
+              subPath: mysql
+            - mountPath: /etc/mysql/mysql.conf.d/
+              name: mysql-conf
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: iris-mysql-password
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: iris-mysql-pvc
+        - name: mysql-conf
+          configMap:
+            name: iris-mysql-config
