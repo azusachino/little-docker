@@ -1,9 +1,11 @@
 # little-docker
 
-record the progress of learning docker
+the recording of docker learning
 
-`保证docker的2375端口可以访问`
+## practices
 
-## springboot
+including practices by using kubernetes and docker (docker-compose)
 
-1. 采用spotify的部署插件
+## other
+
+includes some practical scripts

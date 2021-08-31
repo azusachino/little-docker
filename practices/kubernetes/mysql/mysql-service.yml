@@ -6,12 +6,13 @@ metadata:
   labels:
     name: iris-mysql-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     name: iris-mysql
   ports:
     - protocol: TCP
       port: 3306
       targetPort: 3306
+      nodePort: 30036
 #      nodePort: 30016
 #      name: iris-mysql-nodeport
