@@ -5,6 +5,8 @@ metadata:
   name: iris-mysql-service
   labels:
     name: iris-mysql-service
+# this services only inside minikube, there still need a (minikube service) for outside access.
+# e.g. minikube service iris-mysql-service -n iris
 spec:
   type: NodePort
   selector:
@@ -13,4 +15,4 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
-      nodePort: 30036
+      nodePort: 30016
