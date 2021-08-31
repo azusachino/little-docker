@@ -1,5 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
+metadata:
+  namespace: iris
+  name: iris-mysql-config
 data:
   mysqld.cnf: |-
     [client]
@@ -33,6 +36,3 @@ data:
     innodb_write_io_threads = 4
     innodb_io_capacity = 200
     innodb_io_capacity_max = 2000
-metadata:
-  namespace: iris
-  name: iris-mysql-config
