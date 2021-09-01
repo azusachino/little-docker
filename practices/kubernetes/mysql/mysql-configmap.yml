@@ -4,7 +4,8 @@ metadata:
   namespace: iris
   name: iris-mysql-config
 data:
-  mysqld.cnf: |-
+  haproxy_user: haproxy
+  mysqld.cnf: |
     [client]
     default-character-set=utf8
     [mysqld]

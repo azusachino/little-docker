@@ -30,12 +30,18 @@ spec:
               subPath: mysql
             - mountPath: /etc/mysql/mysql.conf.d/
               name: mysql-conf
+              readOnly: true
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
                   name: iris-mysql-password
+            - name: HAPROXY_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: haproxy_user
+                  name: iris-mysql-config
       volumes:
         - name: mysql-data
           persistentVolumeClaim:
@@ -43,3 +49,6 @@ spec:
         - name: mysql-conf
           configMap:
             name: iris-mysql-config
+            items:
+              - key: mysqld.cnf
+                path: mysqld.cnf

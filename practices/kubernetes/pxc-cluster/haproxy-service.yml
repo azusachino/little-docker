@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: pxc
+  name: haproxy-service
+spec:
+  type: ClusterIP
+  selector:
+    app: haproxy
+  ports:
+    - port: 8888
+      targetPort: 8888
+    - port: 3306
+      targetPort: 3306
