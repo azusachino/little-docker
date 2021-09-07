@@ -1,6 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: iris
   name: hello
 spec:
   schedule: "*/1 * * * *"
