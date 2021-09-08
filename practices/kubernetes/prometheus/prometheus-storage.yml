@@ -1,0 +1,31 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  # use minikube default storage class
+  storageClassName: standard
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      app: prometheus

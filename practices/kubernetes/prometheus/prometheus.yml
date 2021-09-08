@@ -1,0 +1,46 @@
+scrape_configs:
+  - job_name: "kubernetes-service-endpoints"
+    ## 使用endpoints服务发现
+    kubernetes_sd_configs:
+      - role: endpoints
+    ## 标签重定义配置
+    relabel_configs:
+      ## 是否采集Service对应的Pod中的指标,设置 prometheus.io/scrape="true即采集,空或者false则不采集"
+      - action: keep
+        source_labels:
+          [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        regex: "true"
+      ## 指定scheme为 http或者https
+      - action: replace
+        source_labels:
+          [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        regex: (https?)
+        target_label: __scheme__
+      ## 根据prometheus.io/port标签配置的端口号进行指标采集"
+      - action: replace
+        source_labels:
+          [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        target_label: __address__
+        replacement: $1:$2
+      ## 根据prometheus.io/path标签配置路径进行指标采集"
+      - action: replace
+        source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+      ## 获取service资源中的label指标对
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      ## 获取namespace
+      - action: replace
+        source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      ## 获取service名称
+      - action: replace
+        source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      ## 配置instance标签
+      - action: replace
+        source_labels: [__address__]
+        target_label: instance
+        regex: (.+):(.+)

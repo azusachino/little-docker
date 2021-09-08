@@ -1,0 +1,46 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: prometheus-config
+  namespace: kube-system
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval:     15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: "kubernetes"
+    scrape_configs:    
+    ############################### kubernetes-service-endpoints #########################################
+    - job_name: 'kubernetes-service-endpoints'
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        regex: "true"
+      - action: replace
+        source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        regex: (https?)
+        target_label: __scheme__
+      - action: replace
+        source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        target_label: __address__
+        replacement: $1:$2
+      - action: replace
+        source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        regex: (.+)
+        target_label: __metrics_path__
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - action: replace
+        source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - action: replace
+        source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - action: replace
+        source_labels: [__address__]
+        target_label: instance
+        regex: (.+):(.+)
