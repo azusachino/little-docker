@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval:     15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: "kubernetes"
+
+    scrape_configs:
+    ###################### Node Exporter ######################
+    - job_name: 'node-exporter'
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: replace
+        source_labels: [__address__]
+        regex: '(.*):10250'
+        replacement: '${1}:9100'
+        target_label: __address__
+
+# kubernetes_sd_configs: 设置发现模式为 Kubernetes 动态服务发现。
+# kubernetes_sd_configs.role: 指定 Kubernetes 的服务发现模式，这里设置为 Node 则表示从 Kubernetes 集群中每个节点发现目标，其默认地址为 Kubelet 地址的 HTTP 端口。
+# relabel_configs: 用于对采集的标签进行重新标记。
