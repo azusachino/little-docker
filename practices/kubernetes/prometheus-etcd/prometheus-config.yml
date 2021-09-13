@@ -1,0 +1,29 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: prometheus-config
+  namespace: kube-system
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval:     15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: "kubernetes"
+    scrape_configs:
+    ###################### kubernetes-etcd ######################
+    - job_name: "kubernetes-etcd"
+      scheme: https
+      tls_config:
+        ca_file: /certs/ca.crt
+        cert_file: /certs/healthcheck-client.crt
+        key_file: /certs/healthcheck-client.key
+        insecure_skip_verify: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names: ["kube-system"]
+      relabel_configs:
+      - action: keep
+        source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        regex: etcd
