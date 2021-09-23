@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mywebsite-ingress
+spec:
+  rules:
+    - host: mywebsite.com
+      http:
+        paths:
+
+          - backend:
+              service:
+                name: webapp
+                port:
+                  number: 8080
+            path: /demo
+
+          - backend:
+              service:
+                name: web-service
+                port:
+                  number: 80
+            path: /web
+          - backend:
+              service:
+                name: api-service
+                port:
+                  number: 8081
+            path: /api
