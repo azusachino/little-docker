@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-test
+spec:
+  limits:
+    - type: Pod        #对Pod中所有容器资源总和进行限制
+      max:
+        cpu: 4000m
+        memory: 2048Mi
+      min:
+        cpu: 10m
+        memory: 128Mi
+    - type: Container  #对Pod中所有容器资源进行限制
+      max:
+        cpu: 2000m
+        memory: 1024Mi
+      min:
+        cpu: 10m
+        memory: 128Mi
+      default:
+        cpu: 1000m
+        memory: 512Mi
+      defaultRequest:
+        cpu: 500m
+        memory: 256Mi
