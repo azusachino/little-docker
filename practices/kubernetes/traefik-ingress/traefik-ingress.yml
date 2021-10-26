@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: traefik-ingress
@@ -11,12 +11,18 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: nginx
-              servicePort: 80
+              service:
+                name: nginx
+                port:
+                  - name: nginxDefault
+                    number: 80
     - host: traefik.frontend.io
       http:
         paths:
           - path: /
             backend:
-              serviceName: frontend
-              servicePort: 80
+              service:
+                name: frontend
+                port:
+                  - name: frontend
+                    number: 80

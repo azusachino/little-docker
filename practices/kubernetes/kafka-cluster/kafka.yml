@@ -88,7 +88,7 @@ spec:
           volumeMounts:
             - mountPath: /bitnami/kafka
               name: kafka-data
-          # order problem, MY_POD_NAME will not take effect in pod
+          # order problem, MY_POD_NAME will not take effect in pod (read env first, then envFrom)
           #          envFrom:
           #            - configMapRef:
           #                name: kafka-env
