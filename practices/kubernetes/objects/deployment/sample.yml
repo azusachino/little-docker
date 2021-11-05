@@ -21,3 +21,25 @@ spec:
           image: iris-node:latest
           ports:
             - containerPort: 8080
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/backend
+                    operator: Exists
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname # keep one pod in one host (node)
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - iris-node
+              namespaceSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - scv
