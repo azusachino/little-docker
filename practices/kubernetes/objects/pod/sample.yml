@@ -4,6 +4,10 @@ metadata:
   labels:
     app: nginx
   name: nginx-pod
+  annotations:
+    # 限制出入网带宽
+    kubernetes.io/ingress-bandwidth: 1M
+    kubernetes.io/egress-bandwidth: 1M
 spec:
   preemptionPolicy: PreemptLowerPriority
   affinity:
