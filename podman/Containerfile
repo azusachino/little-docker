@@ -1,0 +1,15 @@
+# A Containerfile uses the same syntax as a Dockerfile internally
+FROM alpine:latest
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+RUN apk update && \
+    apk add --no-cache gcc libc-dev && \
+    rm -rf /var/cache/apk/*
+
+RUN ["mkdir", "-p", "/usr/src/app"]
+WORKDIR "/usr/src/app"
+
+COPY main.c /usr/src/app/main.c
+RUN ["gcc", "-o", "main", "main.c"]
+
+CMD ["./main"]
