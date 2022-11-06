@@ -1,0 +1,4 @@
+azusachino.cn:80  azusachino.cn:443{
+    reverse_proxy localhost:2231
+    tls azusachino@proton.me
+}

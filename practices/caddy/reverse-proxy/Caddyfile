@@ -1,0 +1,20 @@
+{
+        storage file_system {
+                root /etc/ssl/caddy
+        }
+}
+*.my.com {
+    tls {
+         dns cloudflare cloudflare_apikey
+    }
+}
+
+www.my.com {
+        reverse_proxy localhost:8080
+        tls /etc/ssl/caddy/certificates/acme-v02.api.letsencrypt.org-directory/wildcard_.my.com/wildcard_.my.com.crt /etc/ssl/caddy/certificates/acme-v02.api.letsencrypt.org-directory/wildcard_.my.com/wildcard_.my.com.key
+}
+
+api.my.com {
+        reverse_proxy localhost:5000
+        tls /etc/ssl/caddy/certificates/acme-v02.api.letsencrypt.org-directory/wildcard_.my.com/wildcard_.my.com.crt /etc/ssl/caddy/certificates/acme-v02.api.letsencrypt.org-directory/wildcard_.my.com/wildcard_.my.com.key
+}
