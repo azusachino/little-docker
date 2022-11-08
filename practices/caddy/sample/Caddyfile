@@ -1,0 +1,50 @@
+diamondfsd.com {  # 启动 http 和 https，访问 http 会自动转跳到 https
+        log access_log.log  # 日志
+        gzip  # 使用gzip压缩
+        proxy / http://127.0.0.1:3999 { # 路径转发
+                header_upstream Host {host}
+                header_upstream X-Real-IP {remote}
+                header_upstream X-Forwarded-For {remote}
+                header_upstream X-Forwarded-Proto {scheme}
+        }
+}
+
+http://api.diamondfsd.com https://api.diamondfsd.com {  # 同时启用 http 和 https 不会自动转跳
+        gzip
+        proxy / http://127.0.0.1:4999 {
+                header_upstream Host {host}
+                header_upstream X-Real-IP {remote}
+                header_upstream X-Forwarded-For {remote}
+                header_upstream X-Forwarded-Proto {scheme}
+        }
+}
+
+hook.diamondfsd.com {
+        proxy / http://127.0.0.1:9000 {
+                header_upstream Host {host}
+                header_upstream X-Real-IP {remote}
+                header_upstream X-Forwarded-For {remote}
+                header_upstream X-Forwarded-Proto {scheme}
+        }
+}
+
+http://file.diamondfsd.com {
+        proxy / http://127.0.0.1:22222
+}
+
+https://file.diamondfsd.com {  
+        root /data/file-upload  # 指定静态文件根目录
+}
+
+yd.diamondfsd.com { 
+        gzip
+        root /data/ydig
+        proxy /ws http://127.0.0.1:9001 {  # 转发所有 /ws 为 websocket
+                websocket
+        }
+}
+
+8.diamondfsd.com {
+        gzip
+        root /data/quaver
+}

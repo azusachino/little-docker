@@ -1,0 +1,6 @@
+example.com:80 {
+  gzip
+  log /var/log/caddy/access.log
+  root /var/www
+  tls /etc/ssl/cert.pem /etc/ssl/key.pem
+}
