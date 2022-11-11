@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: simple-boot
-
-server:
-  port: 8090
