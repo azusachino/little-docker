@@ -41,7 +41,8 @@ metadata:
   name: postgresql-password
   namespace: common
 data:
-  POSTGRES_PASSWORD: Iris1234_.
+  # echo -n 'abcd' | base64
+  POSTGRES_PASSWORD: SXJpczEyMzRfLg==
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -84,29 +85,29 @@ spec:
           ports:
             - name: tcp-postgresql
               containerPort: 5432
-          livenessProbe:
-            failureThreshold: 6
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 5
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - exec pg_isready -U "rootAdmin" -h 127.0.0.1 -p 5432 -d rootDefault
-          readinessProbe:
-            failureThreshold: 6
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 5
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - -e
-                - exec pg_isready -U "rootAdmin" -h 127.0.0.1 -p 5432 -d rootDefault
+          # livenessProbe:
+          #   failureThreshold: 6
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
+          #   exec:
+          #     command:
+          #       - /bin/sh
+          #       - -c
+          #       - exec pg_isready -U "rootAdmin" -h 127.0.0.1 -p 5432 -d rootDefault
+          # readinessProbe:
+          #   failureThreshold: 6
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
+          #   exec:
+          #     command:
+          #       - /bin/sh
+          #       - -c
+          #       - -e
+          #       - exec pg_isready -U "rootAdmin" -h 127.0.0.1 -p 5432 -d rootDefault
           resources:
             limits:
               memory: "300Mi"
@@ -142,9 +143,10 @@ metadata:
 spec:
   selector:
     app: postgresql
-  type: ClusterIP
-  clusterIP: None
+  type: NodePort
+  # clusterIP: None
   ports:
     - name: tcp-postgresql
       port: 5432
       protocol: TCP
+      targetPort: 5432
