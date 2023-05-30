@@ -1,6 +1,6 @@
 # little-docker
 
-the recording of docker learning
+oci-image based stuffs
 
 ## practices
 

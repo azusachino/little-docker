@@ -1,4 +1,3 @@
-# serve a mongo db locally
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -42,6 +41,10 @@ spec:
           volumeMounts:
             - name: storage
               mountPath: ./data/db
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
       volumes:
         - name: storage
           persistentVolumeClaim:
