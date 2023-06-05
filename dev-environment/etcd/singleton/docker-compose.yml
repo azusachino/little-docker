@@ -1,0 +1,21 @@
+version: "3.6"
+
+services:
+  etcd:
+    image: docker.io/bitnami/etcd:3.5
+    ports:
+      - 2379:2379
+      - 2380:2380
+    environment:
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+      - ETCD_ROOT_PASSWORD=${ETCD_PASS}
+    networks:
+      - iris_network
+
+volumes:
+  etcd-data:
+    driver: local
+
+networks:
+  iris_network:
+    driver: bridge
