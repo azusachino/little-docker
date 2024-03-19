@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: docker.io/library/postgres:16-alpine
+    env_file:
+      - postgres.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data-pg:/var/lib/postgresql/data

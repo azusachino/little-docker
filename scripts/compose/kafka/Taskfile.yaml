@@ -3,8 +3,10 @@ version: "3"
 tasks:
   dev:
     cmds:
-      - podman compose up
+      - mkdir -p data-zookeeper
+      - mkdir -p data-kafka
+      - podman-compose up
   clean:
     cmds:
       - podman rm -f $(podman ps -a | grep kafka | awk '{print $1}')
-      - podman rm -f $(podman ps -a | grep zookeeper | awk '{print $1}')
+      # - podman rm -f $(podman ps -a | grep zookeeper | awk '{print $1}')
