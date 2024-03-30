@@ -1,0 +1,24 @@
+:443, azusachino.icu {
+    tls abc@email.com
+    route {
+        forward_proxy {
+            basic_auth ${user_name} ${user_password}
+            hide_ip
+            hide_via
+            probe_resistance
+        }
+        root * /usr/share/nginx/html
+        file_server
+    }
+}
+
+vault.azusachino.icu {
+    reverse_proxy 127.0.0.1:8081
+    tls abc@email.com
+}
+
+note.azusachino.icu {
+    root * /usr/share/nginx/harus-note
+    file_server
+    tls abc@email.com
+}

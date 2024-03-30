@@ -1,0 +1,10 @@
+version: "3"
+
+tasks:
+  dev:
+    cmds:
+      # - mkdir -p data-logs
+      - podman-compose up
+  clean:
+    cmds:
+      - podman rm -f $(podman ps -a | grep mongodb | awk '{print $1}')
