@@ -1,0 +1,10 @@
+version: "3"
+
+tasks:
+  dev:
+    cmds:
+      - caddy start --config Caddyfile --adapter caddyfile
+  restart:
+    cmds:
+      - caddy stop
+      - caddy start --config Caddyfile --adapter caddyfile
