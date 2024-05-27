@@ -1,4 +1,10 @@
 server.azusachino.icu {
+    root *  /usr/share/nginx/html
+    file_server
+    tls azusachino@proton.me
+}
+
+sync-harus-server.azusachino.icu {
     reverse_proxy http://127.0.0.1:8384 {
         header_up Host {upstream_hostport}
         header_up X-Forwarded-Host {host}

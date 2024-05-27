@@ -1,0 +1,15 @@
+version: "3"
+
+dotenv:
+  - "dev.env"
+  # - "github.env"
+
+tasks:
+  start:
+    cmds:
+      - podman-compose up -d
+  clean:
+    cmds:
+      - podman rm -f $(podman ps -a | grep dev_ | awk '{print $1}')
+      - podman volume rm $(podman volume ls | grep dev_ | awk '{print $2}')
+      - podman ps -a
