@@ -1,0 +1,36 @@
+name: immich
+
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:release
+    volumes:
+      - /harus/data/immich:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - prod.env
+    ports:
+      - "2283:2283"
+    depends_on:
+      - redis
+      - database
+    restart: always
+    healthcheck:
+      disable: false
+
+  redis:
+    container_name: immich_redis
+    image: docker.io/redis:6.2-alpine
+    restart: always
+
+  database:
+    container_name: immich_postgres
+    image: docker.io/tensorchord/pgvecto-rs:pg16-v0.2.1
+    env_file:
+      - prod.env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=immich
+    volumes:
+      - /harus/data/postgres:/bitnami/postgresql

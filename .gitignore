@@ -3,5 +3,5 @@
 # tmp runtime files
 data-*/
 
-# dev.env
-dev.env
+# env
+prod.env

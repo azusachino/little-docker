@@ -5,3 +5,11 @@ sync-harus-server.azusachino.icu {
     }
     tls azusachino@yahoo.co.jp
 }
+
+immich.azusachino.icu {
+    reverse_proxy http://127.0.0.1:2283 {
+        header_up Host {upstream_hostport}
+        header_up X-Forwarded-Host {host}
+    }
+    tls azusachino@yahoo.co.jp
+}
