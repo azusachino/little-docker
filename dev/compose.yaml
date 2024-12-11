@@ -1,38 +1,52 @@
+name: harus_dev_server
+
 services:
   valkey:
-    image: docker.io/bitnami/valkey:7.2.5
+    image: docker.io/bitnami/valkey:8.0
     env_file:
-      # - ./github.env
-      - ./dev.env
+      - prod.env
+    volumes:
+      - /harus/data/valkey:/bitnami/valkey/data
     ports:
       - "6379:6379"
-    volumes:
-      - dev_valkey_data:/bitnami/valkey/data
+    networks:
+      - harus_network
+
   kafka:
-    image: docker.io/bitnami/kafka:3.7.0
+    image: docker.io/bitnami/kafka:3.8
     env_file:
-      # - ./github.env
-      - ./dev.env
-    environment:
-      - KAFKA_CFG_NODE_ID=0
-      - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - prod.env
     volumes:
-      - dev_kafka_data:/bitnami/kafka
+      - /harus/data/kafka:/bitnami/kafka
     ports:
-      # - "9093:9093"
       - "9092:9092"
+    networks:
+      - harus_network
+
   postgresql:
-    image: docker.io/bitnami/postgresql:16.3.0
+    image: docker.io/bitnami/postgresql:17.2.0
     env_file:
-      # - ./github.env
-      - ./dev.env
+      - prod.env
+    volumes:
+      - /harus/data/postgresql:/bitnami/postgresql
     ports:
       - "5432:5432"
+    networks:
+      - harus_network
 
-volumes:
-  dev_valkey_data:
-  dev_kafka_data:
+  etcd:
+    image: docker.io/bitnami/etcd:3.5
+    env_file:
+      - prod.env
+    volumes:
+      - /harus/data/etcd:/bitnami/etcd
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    networks:
+      - harus_network
+
+networks:
+  harus_network:
+    driver: bridge
+    external: true
