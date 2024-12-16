@@ -22,6 +22,13 @@ podman-compose -f compose.yaml up
 podman-compose -f compose.yaml down
 ```
 
+to upgrade immich server version.
+
+```sh
+podman-compose pull
+podman-compose up -d
+```
+
 ## tools
 
 - podman

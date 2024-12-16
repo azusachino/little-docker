@@ -4,4 +4,8 @@
 data-*/
 
 # env
+dev.env
 prod.env
+
+# other files
+main.sh

@@ -22,7 +22,12 @@ services:
 
   redis:
     container_name: immich_redis
-    image: docker.io/redis:6.2-alpine
+    image: docker.io/bitnami/valkey:8.0
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - VALKEY_AOF_ENABLED=yes
+    volumes:
+      - /harus/data/valkey:/bitnami/valkey/data
     restart: always
     networks:
       - harus_network
@@ -33,7 +38,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/postgres:/bitnami/postgresql
+      - /harus/data/postgres:/var/lib/postgresql/data
     networks:
       - harus_network
 
