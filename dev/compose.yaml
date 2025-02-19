@@ -6,7 +6,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/valkey:/bitnami/valkey/data
+      - ~/runtime/dev/data/valkey:/bitnami/valkey/data
     ports:
       - "6379:6379"
     networks:
@@ -17,7 +17,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/kafka:/bitnami/kafka
+      - ~/runtime/dev/data/kafka:/bitnami/kafka
     ports:
       - "9092:9092"
     networks:
@@ -28,7 +28,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/postgresql:/bitnami/postgresql
+      - ~/runtime/dev/data/postgresql:/bitnami/postgresql
     ports:
       - "5432:5432"
     networks:
@@ -39,7 +39,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/etcd:/bitnami/etcd
+      - ~/runtime/dev/data/etcd:/bitnami/etcd
     ports:
       - "2379:2379"
       - "2380:2380"
