@@ -1,0 +1,19 @@
+version: "3"
+
+dotenv:
+  - prod.env
+  # - github.env
+
+tasks:
+  config:
+    cmds:
+      - podman-compose config
+  start:
+    cmds:
+      - podman-compose start
+  up:
+    cmds:
+      - podman-compose up -d
+  clean:
+    cmds:
+      - podman-compose down -f

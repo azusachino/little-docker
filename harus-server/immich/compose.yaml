@@ -7,7 +7,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/immich:/usr/src/app/upload
+      - ${IMMICH_VOLUME}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
@@ -15,8 +15,6 @@ services:
       - redis
       - database
     restart: always
-    healthcheck:
-      disable: false
     networks:
       - harus_network
 
@@ -27,7 +25,7 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - VALKEY_AOF_ENABLED=yes
     volumes:
-      - /harus/data/valkey:/bitnami/valkey/data
+      - ${IMMICH_REDIS_VOLUME}:/bitnami/valkey/data
     restart: always
     networks:
       - harus_network
@@ -38,7 +36,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - /harus/data/postgres:/var/lib/postgresql/data
+      - ${IMMICH_DB_VOLUME}:/var/lib/postgresql/data
     networks:
       - harus_network
 

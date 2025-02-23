@@ -1,4 +1,5 @@
-name: harus_dev_server
+# filepath: /Users/azusachino/Projects/project-github/little-docker/harus-server/dev-server/compose.yaml
+name: dev-server
 
 services:
   valkey:
@@ -6,7 +7,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - ~/runtime/dev/data/valkey:/bitnami/valkey/data
+      - ${VALKEY_VOLUME}:/bitnami/valkey/data
     ports:
       - "6379:6379"
     networks:
@@ -17,7 +18,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - ~/runtime/dev/data/kafka:/bitnami/kafka
+      - ${KAFKA_VOLUME}:/bitnami/kafka
     ports:
       - "9092:9092"
     networks:
@@ -28,7 +29,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - ~/runtime/dev/data/postgresql:/bitnami/postgresql
+      - ${POSTGRESQL_VOLUME}:/bitnami/postgresql
     ports:
       - "5432:5432"
     networks:
@@ -39,7 +40,7 @@ services:
     env_file:
       - prod.env
     volumes:
-      - ~/runtime/dev/data/etcd:/bitnami/etcd
+      - ${ETCD_VOLUME}:/bitnami/etcd
     ports:
       - "2379:2379"
       - "2380:2380"
