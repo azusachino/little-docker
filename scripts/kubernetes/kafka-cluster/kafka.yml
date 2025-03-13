@@ -76,7 +76,7 @@ spec:
         runAsUser: 1001
       containers:
         - name: kafka
-          image: docker.io/bitnami/kafka:2.8.0
+          image: mirror.gcr.io/bitnami/kafka:2.8.0
           imagePullPolicy: IfNotPresent
           resources:
             requests:

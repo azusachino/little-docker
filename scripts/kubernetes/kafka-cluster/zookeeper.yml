@@ -105,7 +105,7 @@ spec:
         fsGroup: 1001
       containers:
         - name: zookeeper
-          image: docker.io/bitnami/zookeeper:3.7.0
+          image: mirror.gcr.io/bitnami/zookeeper:3.7.0
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsUser: 1001

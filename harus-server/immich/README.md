@@ -5,8 +5,8 @@
 ```sh
 # prequisite
 podman pull ghcr.io/immich-app/immich-server:release
-podman pull docker.io/redis:6.2-alpine
-podman pull docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0
+podman pull mirror.gcr.io/redis:6.2-alpine
+podman pull mirror.gcr.io/tensorchord/pgvecto-rs:pg14-v0.2.0
 
 # setup data volume
 mkdir -p /harus/data/immich

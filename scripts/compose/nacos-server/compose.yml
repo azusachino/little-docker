@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nacos:
-    image: docker.io/nacos/nacos-server:latest
+    image: mirror.gcr.io/nacos/nacos-server:latest
     container_name: nacos-standalone
     env_file:
       - ./env/nacos.env

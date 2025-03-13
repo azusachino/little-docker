@@ -11,7 +11,7 @@ version: "3"
 
 services:
   redis:
-    image: docker.io/bitnami/redis:7.0
+    image: mirror.gcr.io/bitnami/redis:7.0
     environment:
       - REDIS_PASSWORD=${REDIS_PASS}
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL

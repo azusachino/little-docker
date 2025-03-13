@@ -76,7 +76,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: docker.io/postgres:15-alpine
+          image: mirror.gcr.io/postgres:15-alpine
           envFrom:
             - configMapRef:
                 name: postgresql-configmap

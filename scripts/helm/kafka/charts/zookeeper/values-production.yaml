@@ -12,7 +12,7 @@
 ## ref: https://hub.docker.com/r/bitnami/zookeeper/tags/
 ##
 image:
-  registry: docker.io
+  registry: mirror.gcr.io
   repository: bitnami/zookeeper
   tag: 3.5.6-debian-9-r27
   ## Specify a imagePullPolicy
@@ -44,7 +44,7 @@ image:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: mirror.gcr.io
     repository: bitnami/minideb
     tag: stretch
     pullPolicy: Always
@@ -235,7 +235,7 @@ metrics:
   enabled: true
 
   image:
-    registry: docker.io
+    registry: mirror.gcr.io
     repository: bitnami/zookeeper-exporter
     tag: 0.1.2-debian-9-r46
     pullPolicy: IfNotPresent

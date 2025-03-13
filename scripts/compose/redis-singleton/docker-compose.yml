@@ -2,7 +2,7 @@ version: "3"
 
 services:
   redis:
-    image: docker.io/bitnami/redis:7.0
+    image: mirror.gcr.io/bitnami/redis:7.0
     env_file:
       - ./redis.env
     ports:

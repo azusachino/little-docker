@@ -57,7 +57,7 @@ spec:
         runAsUser: 1001
       containers:
         - name: kafka
-          image: "docker.io/bitnami/kafka:2.3.0-debian-9-r4"
+          image: "mirror.gcr.io/bitnami/kafka:2.3.0-debian-9-r4"
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:

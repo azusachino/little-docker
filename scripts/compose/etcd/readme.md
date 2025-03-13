@@ -11,7 +11,7 @@ version: "3.6"
 
 services:
   etcd:
-    image: docker.io/bitnami/etcd:3.5
+    image: mirror.gcr.io/bitnami/etcd:3.5
     ports:
       - 2379:2379
       - 2380:2380

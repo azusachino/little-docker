@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   kafka-ui:
-    image: docker.io/provectuslabs/kafka-ui:master
+    image: mirror.gcr.io/provectuslabs/kafka-ui:master
     ports:
       - "8081:8080"
     env_file:
@@ -12,7 +12,7 @@ services:
     networks:
       - zk_kafka
   zookeeper:
-    image: docker.io/bitnami/zookeeper:3.7.0
+    image: mirror.gcr.io/bitnami/zookeeper:3.7.0
     # restart: always
     environment:
       - ZOO_SERVER_ID=1
@@ -24,7 +24,7 @@ services:
     networks:
       - zk_kafka
   kafka:
-    image: docker.io/bitnami/kafka:2.8.0
+    image: mirror.gcr.io/bitnami/kafka:2.8.0
     # restart: always
     ports:
       - 9092:9092

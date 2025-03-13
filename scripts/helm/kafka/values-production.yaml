@@ -12,7 +12,7 @@
 ## ref: https://hub.docker.com/r/bitnami/kafka/tags/
 ##
 image:
-  registry: docker.io
+  registry: mirror.gcr.io
   repository: bitnami/kafka
   tag: 2.4.0-debian-10-r0
   ## Specify a imagePullPolicy
@@ -44,7 +44,7 @@ image:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: mirror.gcr.io
     repository: bitnami/minideb
     tag: stretch
     pullPolicy: Always
@@ -371,7 +371,7 @@ metrics:
     ## ref: https://hub.docker.com/r/bitnami/kafka-exporter/tags/
     ##
     image:
-      registry: docker.io
+      registry: mirror.gcr.io
       repository: bitnami/kafka-exporter
       tag: 1.2.0-debian-10-r0
       pullPolicy: IfNotPresent
@@ -438,7 +438,7 @@ metrics:
     ## ref: https://hub.docker.com/r/bitnami/jmx-exporter/tags/
     ##
     image:
-      registry: docker.io
+      registry: mirror.gcr.io
       repository: bitnami/jmx-exporter
       tag: 0.12.0-debian-10-r0
       pullPolicy: IfNotPresent

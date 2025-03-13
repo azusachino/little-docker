@@ -17,13 +17,13 @@ podman run -d --name kong_postgresql \
     --network=kong_network \
     -v=kong_pg_data:/bitnami/postgresql \
     -p=15432:5432 \
-    docker.io/bitnami/postgresql:17.2.0
+    mirror.gcr.io/bitnami/postgresql:17.2.0
 
 # kong bootstrap
 podman run --rm \
     --env-file=prod.env \
     --network=kong_network \
-    docker.io/kong/kong-gateway:3.6-debian kong migrations bootstrap
+    mirror.gcr.io/kong/kong-gateway:3.6-debian kong migrations bootstrap
 
 # kong start
 podman run -d --name kong \
@@ -37,7 +37,7 @@ podman run -d --name kong \
     -p 8445:8445 \
     -p 8003:8003 \
     -p 8004:8004 \
-    docker.io/kong/kong-gateway:3.6-debian
+    mirror.gcr.io/kong/kong-gateway:3.6-debian
 ```
 
 setup test

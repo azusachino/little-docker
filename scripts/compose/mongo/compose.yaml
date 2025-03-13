@@ -1,6 +1,6 @@
 services:
   mongodb:
-    image: docker.io/library/mongo:7.0.8-rc0
+    image: mirror.gcr.io/library/mongo:7.0.8-rc0
     container_name: mongodb
     # restart: always
     ports:
