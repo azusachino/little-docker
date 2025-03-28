@@ -9,3 +9,6 @@ prod.env
 
 # other files
 main.sh
+
+# debug files
+logs/

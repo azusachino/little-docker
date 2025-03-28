@@ -1,0 +1,13 @@
+binlog:
+  sudo docker exec mysql mysql -u root -s -N -t -e "SHOW BINARY LOGS;" > binlog_list.txt
+dump binlog_index="000014":
+  sudo docker exec mysql mysqlbinlog --no-defaults -u -root /bitnami/mysql/data/binlog.{{binlog_index}} > decoded_binlog.sql
+up:
+  sudo docker compose up
+run:
+  sudo docker compose up -d
+down:
+  sudo docker compose down
+reup:
+  sudo docker compose down
+  sudo docker compose up

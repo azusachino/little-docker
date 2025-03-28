@@ -17,6 +17,12 @@ services:
     restart: always
     networks:
       - harus_network
+    labels:
+      glance.name: Immich
+      glance.icon: si:immich
+      glance.url: https://immich.domain.com
+      glance.description: Image & video management
+      glance.id: immich
 
   redis:
     container_name: immich_redis
@@ -29,6 +35,9 @@ services:
     restart: always
     networks:
       - harus_network
+    labels:
+      glance.parent: immich
+      glance.name: Redis
 
   database:
     container_name: immich_postgres
@@ -39,6 +48,9 @@ services:
       - ${IMMICH_DB_VOLUME}:/var/lib/postgresql/data
     networks:
       - harus_network
+    labels:
+      glance.parent: immich
+      glance.name: DB
 
 networks:
   harus_network:
