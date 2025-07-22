@@ -2,6 +2,7 @@
 
 # tmp runtime files
 data-*/
+*-data/
 
 # env
 dev.env

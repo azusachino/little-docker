@@ -1,0 +1,21 @@
+name: greptime
+
+services:
+  greptime:
+    image: greptime/greptimedb
+    container_name: greptime
+    ports:
+      - "100.74.111.28:4000:4000"
+      - "100.74.111.28:4001:4001"
+      - "100.74.111.28:4002:4002"
+      - "100.74.111.28:4003:4003"
+    entrypoint: greptime standalone start --http-addr 0.0.0.0:4000 --rpc-bind-addr 0.0.0.0:4001 --mysql-addr 0.0.0.0:4002 --postgres-addr 0.0.0.0:4003
+    volumes:
+      - ./grep-data:/greptimedb_data
+    networks:
+      - greptime-net
+    restart: unless-stopped
+
+networks:
+  greptime-net:
+    driver: bridge

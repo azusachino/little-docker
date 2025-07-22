@@ -3,20 +3,21 @@ name: canal-dev-services
 services:
   mysql:
     image: bitnami/mysql:5.7.43
-    container_name: mysql
+    container_name: canal-mysql
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ./my_canal.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro
       - mysql_data:/bitnami/mysql/data
+      - /etc/localtime:/etc/localtime:ro
     ports:
-      - "100.89.137.15:23306:3306"
+      - "100.74.111.28:23306:3306"
     networks:
       - harus_network
 
   kafka:
     image: bitnami/kafka:4.0
-    container_name: kafka
+    container_name: canal-kafka
     environment:
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
@@ -25,9 +26,10 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
     ports:
-      - "100.89.137.15:50000:9092"
+      - "100.74.111.28:29092:9092"
     volumes:
       - kafka_data:/bitnami/kafka/data
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - harus_network
 
@@ -47,7 +49,7 @@ services:
     - canal.mq.partition=3
     - canal.mq.partitionHash=.*\\..*:id
     ports:
-      - "100.89.137.15:50001:11111"
+      - "100.74.111.28:22001:11111"
     volumes:
       - ./logs:/home/admin/canal-server/logs
       - /etc/localtime:/etc/localtime:ro
@@ -56,13 +58,14 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
+    container_name: canal-kafka-ui
     ports:
-      - "100.89.137.15:50002:8080"
+      - "100.74.111.28:22002:8080"
     environment:
       - DYNAMIC_CONFIG_ENABLED=true
     volumes:
       - kafka_ui_data:/etc/kafkaui
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - harus_network
     depends_on:

@@ -1,51 +1,115 @@
-# filepath: /Users/azusachino/Projects/project-github/little-docker/harus-server/dev-server/compose.yaml
-name: dev-server
+name: harus-dev-server
 
 services:
   valkey:
-    image: ${IMAGE_REGISTRY}/bitnami/valkey:8.0
-    env_file:
-      - prod.env
+    image: bitnami/valkey:8.1
+    container_name: valkey
+    restart: unless-stopped
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - VALKEY_AOF_ENABLED=yes
+      - VALKEY_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     volumes:
-      - ${VALKEY_VOLUME}:/bitnami/valkey/data
+      - valkey_volume:/bitnami/valkey/data
     ports:
-      - "6379:6379"
+      - "100.74.111.28:6379:6379"
+    networks:
+      - harus_network
+
+  mysql:
+    image: bitnami/mysql:latest
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - mysql_volume:/bitnami/mysql/data
+    ports:
+      - "100.74.111.28:3306:3306"
     networks:
       - harus_network
 
   kafka:
-    image: ${IMAGE_REGISTRY}/bitnami/kafka:3.8
-    env_file:
-      - prod.env
-    volumes:
-      - ${KAFKA_VOLUME}:/bitnami/kafka
+    image: apache/kafka:4.0.0
+    container_name: kafka
+    restart: unless-stopped
+    environment:
+      - KAFKA_NODE_ID=0
+      - KAFKA_PROCESS_ROLES=controller,broker
+      # - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      # - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
     ports:
-      - "9092:9092"
+      - "100.74.111.28:9092:9092"
     networks:
       - harus_network
 
   postgresql:
-    image: ${IMAGE_REGISTRY}/bitnami/postgresql:17.2.0
-    env_file:
-      - prod.env
+    image: bitnami/postgresql:17.2.0
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=abcd1234
+      - POSTGRESQL_POSTGRES_PASSWORD=abcd1234
     volumes:
-      - ${POSTGRESQL_VOLUME}:/bitnami/postgresql
+      - postgresql_volume:/bitnami/postgresql
     ports:
-      - "5432:5432"
+      - "100.74.111.28:5432:5432"
     networks:
       - harus_network
 
   etcd:
-    image: ${IMAGE_REGISTRY}/bitnami/etcd:3.5
-    env_file:
-      - prod.env
+    image: bitnami/etcd:3.5
+    container_name: etcd
+    restart: unless-stopped
+    environment:
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+      - ETCD_ROOT_PASSWORD=abcd1234
     volumes:
-      - ${ETCD_VOLUME}:/bitnami/etcd
+      - etcd_volume:/bitnami/etcd
     ports:
-      - "2379:2379"
-      - "2380:2380"
+      - "100.74.111.28:2379:2379"
+      - "100.74.111.28:2380:2380"
     networks:
       - harus_network
+
+  prometheus:
+    image: bitnami/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+      - prometheus_volume:/opt/bitnami/prometheus/data
+    ports:
+      - "100.74.111.28:9090:9090"
+    networks:
+      - harus_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=abcd1234
+    ports:
+      - "100.74.111.28:3000:3000"
+    networks:
+      - harus_network
+    depends_on:
+      - prometheus
+
+volumes:
+  mysql_volume:
+  valkey_volume:
+  postgresql_volume:
+  etcd_volume:
+  prometheus_volume:
 
 networks:
   harus_network:

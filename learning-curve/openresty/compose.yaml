@@ -1,0 +1,14 @@
+name: openresty
+
+services:
+  openresty:
+    image: openresty/openresty:jammy
+    container_name: openresty
+    volumes:
+      - ./run-data/conf.d:/etc/nginx/conf.d
+    networks:
+      - harus_network
+
+networks:
+  harus_network:
+    external: true
