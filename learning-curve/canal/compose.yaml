@@ -16,7 +16,7 @@ services:
       - harus_network
 
   kafka:
-    image: bitnami/kafka:4.0
+    image: soldevelo/kafka:4.0
     container_name: canal-kafka
     environment:
       - KAFKA_CFG_NODE_ID=0
